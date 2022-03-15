@@ -1,4 +1,4 @@
-import {appendFileSync, existsSync, readFileSync, unlinkSync} from "fs";
+import {appendFileSync, existsSync, readFileSync, unlinkSync, writeFileSync} from "fs";
 
 export class Files {
 
@@ -8,6 +8,10 @@ export class Files {
 
 	public static write(path: string, data: string): void {
 		appendFileSync(path, data);
+	}
+
+	public static create(path: string): void {
+		writeFileSync(path, "");
 	}
 
 	public static delete(path: string): void {
