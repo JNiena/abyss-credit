@@ -1,0 +1,9 @@
+{
+  "name": "abysscredit",
+  "main": "source/Main.ts",
+  "version": "1.0.0",
+  "dependencies": {
+    "typescript": "latest",
+    "discord.js": "latest"
+  }
+}
