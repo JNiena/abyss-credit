@@ -1,0 +1,4 @@
+src/
+node_modules/
+botconfig.ts
+credentials.ts
