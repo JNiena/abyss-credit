@@ -1,9 +1,15 @@
 {
   "name": "abysscredit",
-  "main": "source/Main.ts",
-  "version": "1.0.0",
+  "description": "",
+  "main": "target/Main.js",
+  "scripts": {
+    "start": "npx tsc && node target/Main.js"
+  },
   "dependencies": {
-    "typescript": "latest",
+    "@sapphire/framework": "latest",
     "discord.js": "latest"
+  },
+  "devDependencies": {
+    "typescript": "latest"
   }
 }
