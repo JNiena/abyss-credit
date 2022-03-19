@@ -24,6 +24,7 @@ export class DiscordUtil {
 	}
 
 	public static parseNum(number: string): number | undefined {
+		number = number.replace(/,/g, "");
 		if (!/^\d+$/.test(number)) return undefined;
 		return Number.parseInt(number);
 	}
