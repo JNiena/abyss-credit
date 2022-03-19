@@ -14,6 +14,15 @@ export class DiscordUtil {
 		return guild.members.cache.get(memberID);
 	}
 
+	public static hasAnyRole(member: GuildMember, roles: string[]): boolean {
+		for (let i = 0; i < roles.length; i++) {
+			if (member?.roles.cache.has(roles[i])) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public static parseNum(number: string): number | undefined {
 		if (!/^\d+$/.test(number)) return undefined;
 		return Number.parseInt(number);
