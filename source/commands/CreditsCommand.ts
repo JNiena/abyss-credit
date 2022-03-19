@@ -24,8 +24,8 @@ export class CreditsCommand extends Command {
 		if (guild === undefined) return message.channel.send("Invalid guild!");
 
 		let subCommand: string = await args.pick("string");
-		let targetUser: string = await args.pick("string").catch(() => message.author.id);
 
+		let targetUser: string = await args.pick("string").catch(() => message.author.id);
 		if (targetUser !== message.author.id) targetUser = targetUser.slice(3, -1);
 
 		let receiver: GuildMember | undefined = DiscordUtil.getMember(guild, targetUser);
