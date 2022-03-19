@@ -7,7 +7,7 @@ import {Timestamp} from "../Timestamp";
 import bot from "../../config/Bot";
 import {DiscordUtil} from "../DiscordUtil";
 import {GoogleSpreadsheetWorksheet} from "google-spreadsheet";
-import roles from "../../config/Permissions";
+import permissions from "../../config/Permissions";
 
 export class CreditsCommand extends Command {
 
@@ -24,7 +24,7 @@ export class CreditsCommand extends Command {
 		if (guild === undefined) return message.channel.send("Invalid guild!");
 
 		if (message.member === null) return message.channel.send("Invalid arguments.");
-		if (!DiscordUtil.hasAnyRole(message.member, roles.credits)) return message.channel.send("You do not have the required role to do that!");
+		if (!DiscordUtil.hasAnyRole(message.member, permissions.credits)) return message.channel.send("You do not have the required role to do that!");
 
 		let subCommand: string = await args.pick("string");
 
