@@ -27,9 +27,8 @@ export class BalanceCommand extends Command {
 		let rows: GoogleSpreadsheetRow[] = await Spreadsheet.getRows(google.spreadsheet_id, google.client_email, google.private_key).then();
 		let member: GuildMember | undefined = DiscordUtil.getMember(guild, targetUser);
 		if (member === undefined) return message.channel.send("Invalid user!");
-		if (member) return message.channel.send(`This user has ${this.getCredits(rows, DiscordUtil.getName(member))} credits`);
 
-		return message.channel.send("There has been an error parsing that command!");
+		return message.channel.send(`This user has ${this.getCredits(rows, DiscordUtil.getName(member))} credits`);
 	}
 
 	private getCredits(rows: GoogleSpreadsheetRow[], user: string): number {
