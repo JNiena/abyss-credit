@@ -38,7 +38,10 @@ export class BalanceCommand extends Command {
 	private getCredits(rows: GoogleSpreadsheetRow[], user: string): number {
 		for (let i = 0; i < rows.length; i++) {
 			if (rows[i]["Player Name"] === user) {
-				return Number.parseInt(rows[i]["Total Credit"]);
+				let credits: number | undefined = DiscordUtil.parseNum(rows[i]["Total Credit"]);
+				if (credits !== undefined) {
+					return credits;
+				}
 			}
 		}
 		return 0;
