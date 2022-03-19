@@ -1,5 +1,0 @@
-export = {
-	"token": "",
-	"guild": "",
-	"prefix": ""
-}
