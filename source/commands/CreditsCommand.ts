@@ -7,6 +7,7 @@ import {Timestamp} from "../Timestamp";
 import bot from "../../config/Bot";
 import {DiscordUtil} from "../DiscordUtil";
 import {GoogleSpreadsheetWorksheet} from "google-spreadsheet";
+import roles from "../../config/Permissions";
 
 export class CreditsCommand extends Command {
 
@@ -14,14 +15,16 @@ export class CreditsCommand extends Command {
 		super(context, {
 			...options,
 			name: "credits",
-			aliases: ["c"],
-			preconditions: ["AdminOnly", "KingOnly"]
+			aliases: ["c", "credit"]
 		});
 	}
 
 	public async messageRun(message: Message, args: Args): Promise<Message> {
 		let guild: Guild | undefined = this.container.client.guilds.cache.get(bot.guild);
 		if (guild === undefined) return message.channel.send("Invalid guild!");
+
+		if (message.member === null) return message.channel.send("Invalid arguments.");
+		if (!DiscordUtil.hasAnyRole(message.member, roles.credits)) return message.channel.send("You do not have the required role to do that!");
 
 		let subCommand: string = await args.pick("string");
 
