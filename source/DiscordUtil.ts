@@ -1,4 +1,4 @@
-import {Guild, GuildMember} from "discord.js";
+import {Guild, GuildMember, Message} from "discord.js";
 
 export class DiscordUtil {
 
@@ -17,6 +17,15 @@ export class DiscordUtil {
 	public static hasAnyRole(member: GuildMember, roles: string[]): boolean {
 		for (let i = 0; i < roles.length; i++) {
 			if (member?.roles.cache.has(roles[i])) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static fromAnyChannel(message: Message, channels: string[]): boolean {
+		for (let i = 0; i < channels.length; i++) {
+			if (message.channel.id === channels[i]) {
 				return true;
 			}
 		}
