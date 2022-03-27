@@ -15,7 +15,7 @@ export class CreditsCommand extends Command {
 		super(context, {
 			...options,
 			name: "credits",
-			aliases: ["c", "credit"]
+			aliases: ["c", "credit", "credits"]
 		});
 	}
 
