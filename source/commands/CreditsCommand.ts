@@ -8,6 +8,7 @@ import bot from "../../config/Bot";
 import {DiscordUtil} from "../DiscordUtil";
 import {GoogleSpreadsheetWorksheet} from "google-spreadsheet";
 import permissions from "../../config/Permissions";
+import channels from "../../config/Channels"
 
 export class CreditsCommand extends Command {
 
@@ -25,6 +26,8 @@ export class CreditsCommand extends Command {
 
 		if (message.member === null) return message.channel.send("Invalid arguments.");
 		if (!DiscordUtil.hasAnyRole(message.member, permissions.credits)) return message.channel.send("You do not have the required role to do that!");
+
+		if (!DiscordUtil.fromAnyChannel(message, channels.credits)) return message.channel.send("That command cannot be used in this channel!");
 
 		let subCommand: string = await args.pick("string");
 
