@@ -2,7 +2,9 @@
 ## Credit Discord Bot
 
 Abyss Credit is a project that allows you to setup a credit system for your discord server.
+
 The idea is that server owners can add or remove credits to their members.
+
 What the credits mean is ultimately up to you.
 
 ## Features
