@@ -1,5 +1,5 @@
 # Abyss Credit
-## Credit Discord Bot
+## Discord Credit Bot
 
 Abyss Credit is a project that allows you to setup a credit system for your discord server.
 
