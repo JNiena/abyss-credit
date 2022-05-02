@@ -1,41 +1,36 @@
-import {Args, Command} from "@sapphire/framework";
-import type {Message} from "discord.js";
-import {Guild, GuildMember} from "discord.js";
-import google from "../../config/Google";
-import bot from "../../config/Bot";
-import {GoogleSpreadsheetRow} from "google-spreadsheet";
-import {Spreadsheet} from "../Spreadsheet";
+import {Command} from "discord-akairo";
+import {Message} from "discord.js";
+import {Config} from "../Config";
 import {DiscordUtil} from "../DiscordUtil";
-import permissions from "../../config/Permissions";
-import channels from "../../config/Channels"
+import {Spreadsheet} from "../Spreadsheet";
+import {GoogleSpreadsheetRow} from "google-spreadsheet";
 
 export class BalanceCommand extends Command {
 
-	public constructor(context: Command.Context, options: Command.Options) {
-		super(context, {
-			...options,
-			name: "balance",
-			aliases: ["b", "bal"],
+	private config: Config;
+
+	public constructor(config: Config) {
+		super("balance", {
+			"aliases": ["balance", "bal", "b"],
+			"args": [
+				{
+					"id": "member",
+					"type": "member",
+					"default": message => message.member
+				}
+			]
 		});
+		this.config = config;
 	}
 
-	public async messageRun(message: Message, args: Args): Promise<Message> {
-		let guild: Guild | undefined = this.container.client.guilds.cache.get(bot.guild);
-		if (guild === undefined) return message.channel.send("Invalid guild!");
-
-		if (message.member === null) return message.channel.send("Invalid arguments.");
-		if (!DiscordUtil.hasAnyRole(message.member, permissions.balance)) return message.channel.send("You do not have the required role to do that!");
-
-		if (!DiscordUtil.fromAnyChannel(message, channels.balance)) return message.channel.send("That command cannot be used in this channel!");
-
-		let targetUser: string = await args.pick("string").catch(() => message.author.id);
-		if (targetUser !== message.author.id) targetUser = targetUser.slice(3, -1);
-
-		let rows: GoogleSpreadsheetRow[] = await Spreadsheet.getRows(google.spreadsheet_id, google.client_email, google.private_key).then();
-		let member: GuildMember | undefined = DiscordUtil.getMember(guild, targetUser);
-		if (member === undefined) return message.channel.send("Invalid user!");
-
-		return message.channel.send(`This user has ${this.getCredits(rows, DiscordUtil.getName(member))} credits`);
+	public async exec(message: Message, args: any): Promise<any> {
+		if (!DiscordUtil.hasAnyRole(message.member, this.config.get()["commands"]["balance"]["permissions"])) return message.channel.send("You do not have the required role to do that.");
+		if (!DiscordUtil.fromAnyChannel(message, this.config.get()["commands"]["balance"]["usage"])) {
+			return message.channel.send(`That command cannot be used in this channel.\nTry the following channels: ${DiscordUtil.parseChannelNames(this.config.get()["commands"]["balance"]["usage"])}`);
+		}
+		if (args.member === undefined) return message.channel.send("That is an invalid user.");
+		let rows: GoogleSpreadsheetRow[] = await Spreadsheet.getRows(this.config.get()["google"]["spreadsheetID"], this.config.get()["google"]["clientEmail"], this.config.get()["google"]["privateKey"]);
+		return message.channel.send(`That user has ${this.getCredits(rows, DiscordUtil.getName(args.member))} credits.`);
 	}
 
 	private getCredits(rows: GoogleSpreadsheetRow[], user: string): number {

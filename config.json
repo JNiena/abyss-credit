@@ -1,0 +1,19 @@
+{
+  "token": "",
+  "prefix": "",
+  "commands": {
+    "balance": {
+      "permissions": [],
+      "usage": []
+    },
+    "credit": {
+      "permissions": [],
+      "usage": []
+    }
+  },
+  "google": {
+    "spreadsheetID": "",
+    "clientEmail": "",
+    "privateKey": ""
+  }
+}

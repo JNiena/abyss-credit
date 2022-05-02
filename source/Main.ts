@@ -1,5 +1,10 @@
-import {SapphireClient} from "@sapphire/framework";
-import bot from "../config/Bot";
+import {DiscordBot} from "./DiscordBot";
+import {Config} from "./Config";
+import {BalanceCommand} from "./commands/BalanceCommand";
+import {CreditCommand} from "./commands/CreditCommand";
 
-let client = new SapphireClient({intents: ["GUILDS", "GUILD_MESSAGES"], defaultPrefix: bot.prefix});
-client.login(bot.token).then();
+let config: Config = new Config("config.json");
+let discordBot: DiscordBot = new DiscordBot(config);
+discordBot.register(new BalanceCommand(config));
+discordBot.register(new CreditCommand(config))
+discordBot.start();

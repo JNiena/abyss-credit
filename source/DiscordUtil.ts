@@ -1,17 +1,9 @@
-import {Guild, GuildMember, Message} from "discord.js";
+import {GuildMember, Message} from "discord.js";
 
 export class DiscordUtil {
 
 	public static getName(member: GuildMember): string {
 		return member.nickname ? member.nickname : member.user.username;
-	}
-
-	public static getID(member: GuildMember): string {
-		return member.id;
-	}
-
-	public static getMember(guild: Guild, memberID: string): GuildMember | undefined {
-		return guild.members.cache.get(memberID);
 	}
 
 	public static hasAnyRole(member: GuildMember, roles: string[]): boolean {
@@ -30,6 +22,14 @@ export class DiscordUtil {
 			}
 		}
 		return false;
+	}
+
+	public static parseChannelNames(channels: string[], minus: number = 0): string {
+		let names: string = "";
+		for (let i = 0; i < channels.length - minus; i++) {
+			 names += `<#${channels[i]}> `;
+		}
+		return names.slice(0, -1) + ".";
 	}
 
 	public static parseNum(number: string): number | undefined {
