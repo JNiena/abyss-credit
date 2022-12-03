@@ -1,6 +1,6 @@
-import {Config} from "./Config";
-import {AkairoClient, Command, CommandHandler} from "discord-akairo";
-import {TextChannel} from "discord.js";
+import { Config } from "./Config";
+import { AkairoClient, Command, CommandHandler } from "discord-akairo";
+import { TextChannel } from "discord.js";
 
 export class DiscordBot extends AkairoClient {
 
@@ -8,12 +8,12 @@ export class DiscordBot extends AkairoClient {
 
 	public constructor(config: Config) {
 		super();
-		this.commandHandler = new CommandHandler(this, {"prefix": config.get()["prefix"]});
+		this.commandHandler = new CommandHandler(this, { "prefix": config.get()["prefix"] });
 		this.token = config.get()["token"];
 	}
 
 	public start(): void {
-		if (this.token !== null && this.token !== undefined) {
+		if (this.token !== null) {
 			this.login(this.token).then();
 		}
 	}
@@ -22,12 +22,14 @@ export class DiscordBot extends AkairoClient {
 		this.destroy();
 	}
 
-	public register(command: Command): void {
+	public registerCommand(command: Command): void {
 		this.commandHandler.register(command);
 	}
 
 	public async send(message: string, channelID: string): Promise<any> {
-		if (message.length === 0) return Promise.resolve();
+		if (message.trim().length === 0) {
+			return Promise.resolve();
+		}
 		await (this.channels.cache.get(channelID) as TextChannel).send(message);
 	}
 

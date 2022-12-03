@@ -1,4 +1,4 @@
-import {GuildMember, Message} from "discord.js";
+import { GuildMember, Message } from "discord.js";
 
 export class DiscordUtil {
 
@@ -27,7 +27,7 @@ export class DiscordUtil {
 	public static parseChannelNames(channels: string[], minus: number = 0): string {
 		let names: string = "";
 		for (let i = 0; i < channels.length - minus; i++) {
-			 names += `<#${channels[i]}> `;
+			names += `<#${channels[i]}> `;
 		}
 		return names.slice(0, -1) + ".";
 	}
