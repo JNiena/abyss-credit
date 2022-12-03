@@ -1,15 +1,15 @@
 # Abyss Credit
 ## Discord Credit Bot
 
-Abyss Credit is a project that allows you to setup a credit system for your discord server.
+Abyss Credit is a project that allows you to setup multiple currency systems for your discord server.
 
-The idea is that server owners can add or remove credits to their members.
+The idea is that server owners can hook these currencies up to a google spreadsheet.
 
-What the credits mean is ultimately up to you.
+What the currencies mean is ultimately up to you.
 
 ## Features
 
-- Add and remove credits to any member.
+- Add and remove currencies to any member.
 - Setup permissions for each command.
 - Allow commands only in certain channels.
 - Hook up to a google spreadsheet to easily view all data.
