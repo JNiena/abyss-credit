@@ -3,10 +3,19 @@
   "prefix": "",
   "commands": {
     "balance": {
+      "aliases": [],
+      "permissions": [""],
+      "usage": []
+    }
+  },
+  "currencies": {
+    "gold": {
+      "aliases": [],
       "permissions": [],
       "usage": []
     },
     "credit": {
+      "aliases": [],
       "permissions": [],
       "usage": []
     }
