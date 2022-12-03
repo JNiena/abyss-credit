@@ -34,8 +34,11 @@ export class DiscordUtil {
 
 	public static parseNum(number: string): number | undefined {
 		number = number.replace(/,/g, "");
-		if (!/^\d+$/.test(number)) return undefined;
-		return Number.parseInt(number);
+		return !/^-?[0-9]*$/.test(number) ? undefined : Number.parseInt(number);
+	}
+
+	public static uppercaseFirst(string: string): string {
+		return string.charAt(0).toUpperCase() + string.substring(1);
 	}
 
 }
