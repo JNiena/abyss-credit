@@ -9,11 +9,6 @@
     }
   },
   "currencies": {
-    "gold": {
-      "aliases": [],
-      "permissions": [],
-      "usage": []
-    },
     "credit": {
       "aliases": [],
       "permissions": [],
