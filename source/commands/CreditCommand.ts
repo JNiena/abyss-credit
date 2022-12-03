@@ -1,6 +1,5 @@
 import { Command } from "discord-akairo";
 import { Message } from "discord.js";
-import { Config } from "../Config";
 import { DiscordUtil } from "../DiscordUtil";
 import { Spreadsheet } from "../Spreadsheet";
 import { GoogleSpreadsheetWorksheet } from "google-spreadsheet";
@@ -8,11 +7,14 @@ import { Timestamp } from "../Timestamp";
 
 export class CreditCommand extends Command {
 
-	private config: Config;
+	private name: string;
+	private permissions: string[];
+	private usage: string[];
+	private credentials: any;
 
-	public constructor(config: Config) {
-		super("credit", {
-			"aliases": ["credit", "c"],
+	public constructor(name: string, aliases: string[], permissions: string[], usage: string[], credentials: any) {
+		super(name, {
+			"aliases": aliases,
 			"args": [
 				{
 					"id": "subCommand",
@@ -28,18 +30,21 @@ export class CreditCommand extends Command {
 				}
 			]
 		});
-		this.config = config;
+		this.name = name;
+		this.permissions = permissions;
+		this.usage = usage;
+		this.credentials = credentials;
 	}
 
 	public async exec(message: Message, args: any): Promise<any> {
 		if (message.member === null) {
 			return;
 		}
-		if (!DiscordUtil.hasAnyRole(message.member, this.config.get()["commands"]["credit"]["permissions"])) {
+		if (!DiscordUtil.hasAnyRole(message.member, this.permissions)) {
 			return message.channel.send("You do not have the required role to do that.");
 		}
-		if (!DiscordUtil.fromAnyChannel(message, this.config.get()["commands"]["credit"]["usage"])) {
-			return message.channel.send(`That command cannot be used in this channel.\nTry the following channels: ${DiscordUtil.parseChannelNames(this.config.get()["commands"]["credit"]["usage"])}.`);
+		if (!DiscordUtil.fromAnyChannel(message, this.usage)) {
+			return message.channel.send(`That command cannot be used in this channel.\nTry the following channels: ${DiscordUtil.parseChannelNames(this.usage)}`);
 		}
 		if (args.subCommand === undefined || args.subCommand !== "add" && args.subCommand !== "remove") {
 			return message.channel.send("That is an invalid subcommand.");
@@ -52,13 +57,13 @@ export class CreditCommand extends Command {
 		}
 		let reply: string;
 		args.subCommand === "add"
-			? reply = `${args.amount} credits have been added to ${DiscordUtil.getName(args.receiver)}.`
-			: reply = `${args.amount} credits have been removed from ${DiscordUtil.getName(args.receiver)}.`;
-		let sheet: GoogleSpreadsheetWorksheet = await Spreadsheet.getSheet(this.config.get()["google"]["spreadsheetID"], this.config.get()["google"]["clientEmail"], this.config.get()["google"]["privateKey"]);
+			? reply = `${args.amount} ${this.name} have been added to ${DiscordUtil.getName(args.receiver)}.`
+			: reply = `${args.amount} ${this.name} have been removed from ${DiscordUtil.getName(args.receiver)}.`;
+		let sheet: GoogleSpreadsheetWorksheet = await Spreadsheet.getSheet(this.credentials["spreadsheetID"], DiscordUtil.uppercaseFirst(this.name), this.credentials["clientEmail"], this.credentials["privateKey"]);
 		await sheet.addRow({
 			"Awarded By": DiscordUtil.getName(message.member),
 			"Awarded To": DiscordUtil.getName(args.receiver),
-			"Credit Amount": (args.subCommand === "add" ? "+" : "-") + args.amount,
+			"Amount": (args.subCommand === "add" ? "+" : "-") + args.amount,
 			"Time": Timestamp.now()
 		});
 		return message.channel.send(reply);
