@@ -3,8 +3,7 @@
     "module": "commonjs",
     "target": "ES2022",
     "outDir": "target",
-    "strict": true,
-    "sourceMap": true
+    "strict": true
   },
   "exclude": [
     "node_modules"

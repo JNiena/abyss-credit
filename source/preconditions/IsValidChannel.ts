@@ -16,6 +16,7 @@ export class IsValidChannel extends Precondition {
 	}
 
 	private async isValidChannel(channelId: string): Promise<Result<unknown, UserError>> {
+		// @ts-ignore
 		return Config.channels.includes(channelId)
 			? this.ok()
 			: this.error({ "message": "That command cannot be used in this channel." });
