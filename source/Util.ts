@@ -6,6 +6,6 @@ export class Util {
 	}
 
 	public static resolveDiscordName(member: GuildMember): string {
-		return member.nickname ? member.user.username : member.user.username;
+		return member.nickname ? member.nickname : member.user.username;
 	}
 }
