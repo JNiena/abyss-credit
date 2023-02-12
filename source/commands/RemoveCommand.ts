@@ -5,17 +5,17 @@ import { Spreadsheet } from "../Spreadsheet";
 import { Util } from "../Util";
 import Config = require("../Config");
 
-export class BalanceCommand extends Command {
+export class RemoveCommand extends Command {
 	private currencySystem: CurrencySystem;
 
 	public constructor(context: Command.Context, options: Command.Options) {
 		super(context, {
 			...options,
-			"name": "balance",
-			"aliases": ["balance", "bal", "b"],
+			"name": "remove",
+			"aliases": ["remove", "r"],
 			// @ts-ignore
-			"preconditions": ["IsValidChannel"],
-			"description": "Returns the balance of the designated user."
+			"preconditions": ["IsCreditor", "IsValidChannel"],
+			"description": "Removes from the balance of the designated user."
 		});
 		this.currencySystem = new CurrencySystem(new Spreadsheet(Config.spreadsheet.id, Config.spreadsheet.clientEmail, Config.spreadsheet.privateKey));
 	}
@@ -25,18 +25,12 @@ export class BalanceCommand extends Command {
 			return message.channel.send("**That command cannot be executed.**").then();
 		}
 
-		let member: GuildMember = message.member;
-		if (args.next()) {
-			member = await args.pick("member");
-		}
+		const currency: string = await args.pick("enum", { enum: [...Config.currencies, "all"] });
+		const member: GuildMember = await args.pick("member");
+		const amount: number = await args.pick("number");
+		const reason: string = await args.rest("string");
 
-		let reply: string = "";
-		for (let i = 0; i < Config.currencies.length; i++) {
-			const currency: string = Config.currencies[i];
-			const balance: number = await this.currencySystem.balance(currency, Util.resolveDiscordName(member));
-			reply += `${Util.uppercaseFirst(currency)}: ${balance}\n`;
-		}
-
-		return message.channel.send(`**${reply}**`).then();
+		await this.currencySystem.remove(currency, Util.resolveDiscordName(message.member), Util.resolveDiscordName(member), amount, reason);
+		return message.channel.send(`**${amount} ${currency === "all" ? "of all currencies" : currency} has been removed from ${member}.**`).then();
 	}
 }

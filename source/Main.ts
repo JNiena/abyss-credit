@@ -1,19 +1,11 @@
-import { DiscordBot } from "./DiscordBot";
-import { Config } from "./Config";
-import { BalanceCommand } from "./commands/BalanceCommand";
-import { CreditCommand } from "./commands/CreditCommand";
+import { SapphireClient } from "@sapphire/framework";
+import { GatewayIntentBits } from "discord.js";
+import Config = require("./Config");
 
-let config: Config = new Config("config.json");
-let discordBot: DiscordBot = new DiscordBot(config);
-
-Object.keys(config.get()["currencies"]).forEach(async key => {
-  let aliases: string[] = config.get()["currencies"][key]["aliases"];
-  let permissions: string[] = config.get()["currencies"][key]["permissions"];
-  let usage: string[] = config.get()["currencies"][key]["usage"];
-  discordBot.registerCommand(new CreditCommand(key, aliases, permissions, usage, config.get()["google"]));
+const client: SapphireClient = new SapphireClient({
+	"intents": [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
+	"loadMessageCommandListeners": true,
+	"defaultPrefix": "!"
 });
 
-let balance: any = config.get()["commands"]["balance"];
-discordBot.registerCommand(new BalanceCommand(config.get()["currencies"], balance["aliases"], balance["permissions"], balance["usage"], config.get()["google"]))
-
-discordBot.start();
+client.login(Config.token).then();

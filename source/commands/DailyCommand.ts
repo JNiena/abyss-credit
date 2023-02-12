@@ -1,23 +1,25 @@
 import { Args, Command, MessageCommand } from "@sapphire/framework";
-import { GuildMember, Message } from "discord.js";
+import { Message } from "discord.js";
 import { CurrencySystem } from "../CurrencySystem";
 import { Spreadsheet } from "../Spreadsheet";
 import { Util } from "../Util";
 import Config = require("../Config");
 
-export class BalanceCommand extends Command {
+export class DailyCommand extends Command {
 	private currencySystem: CurrencySystem;
+	private disallowedUsers: Map<string, number>;
 
 	public constructor(context: Command.Context, options: Command.Options) {
 		super(context, {
 			...options,
-			"name": "balance",
-			"aliases": ["balance", "bal", "b"],
+			"name": "daily",
+			"aliases": ["daily"],
 			// @ts-ignore
 			"preconditions": ["IsValidChannel"],
-			"description": "Returns the balance of the designated user."
+			"description": "Adds 1-3 credits to the user daily."
 		});
 		this.currencySystem = new CurrencySystem(new Spreadsheet(Config.spreadsheet.id, Config.spreadsheet.clientEmail, Config.spreadsheet.privateKey));
+		this.disallowedUsers = new Map<string, number>();
 	}
 
 	public async messageRun(message: Message, args: Args, context: MessageCommand.RunContext): Promise<void> {
@@ -25,16 +27,18 @@ export class BalanceCommand extends Command {
 			return message.channel.send("**That command cannot be executed.**").then();
 		}
 
-		let member: GuildMember = message.member;
-		if (args.next()) {
-			member = await args.pick("member");
+		let time: number | undefined = this.disallowedUsers.get(message.author.id);
+		if (time && new Date().getTime() - time < 86_400_000) {
+			return message.channel.send("**You've already claimed your daily rewards!**").then();
 		}
+		this.disallowedUsers.set(message.author.id, new Date().getTime());
 
-		let reply: string = "";
+		let reply: string = "Daily rewards received:\n";
 		for (let i = 0; i < Config.currencies.length; i++) {
 			const currency: string = Config.currencies[i];
-			const balance: number = await this.currencySystem.balance(currency, Util.resolveDiscordName(member));
-			reply += `${Util.uppercaseFirst(currency)}: ${balance}\n`;
+			const amount: number = Math.floor(Math.random() * 3) + 1;
+			await this.currencySystem.add(currency, "Daily", Util.resolveDiscordName(message.member), amount, "Daily");
+			reply += `${Util.uppercaseFirst(currency)}: ${amount}\n`;
 		}
 
 		return message.channel.send(`**${reply}**`).then();
