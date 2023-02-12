@@ -21,13 +21,9 @@ export class BalanceCommand extends Command {
 	}
 
 	public async messageRun(message: Message, args: Args, context: MessageCommand.RunContext): Promise<void> {
-		if (!message.member) {
+		const member: GuildMember | null = await args.pick("member").catch(() => message.member);
+		if (!member) {
 			return message.channel.send("**That command cannot be executed.**").then();
-		}
-
-		let member: GuildMember = message.member;
-		if (args.next()) {
-			member = await args.pick("member");
 		}
 
 		let reply: string = "";
