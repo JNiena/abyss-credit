@@ -1,4 +1,4 @@
+.idea/
 node_modules/
 target/
 package-lock.json
-source/Config.ts

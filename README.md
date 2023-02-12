@@ -13,7 +13,7 @@ What the currencies mean is ultimately up to you.
 - Setup permissions for each command.
 - Allow commands only in certain channels.
 - Hook up to a google spreadsheet to easily view all data.
-- Records all transactions. Record includes the timestamp, awarder, receiver, and the amount given.
+- Records all transactions. Record includes the timestamp, awarder, receiver, amount, and reason.
 
 Visit the [Wiki](https://github.com/JNiena/Abyss-Credit/wiki) for more details.
 
@@ -34,7 +34,7 @@ Visit the [Wiki](https://github.com/JNiena/Abyss-Credit/wiki) for more details.
 
 ## Development
 
-Developed by JNiena and Arnavpmr.
+Developed by JNiena.
 
 ## License
 
