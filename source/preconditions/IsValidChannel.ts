@@ -8,17 +8,17 @@ export class IsValidChannel extends Precondition {
 	}
 
 	public override async chatInputRun(interaction: CommandInteraction): Promise<Result<unknown, UserError>> {
-		return this.error({ "message": "This precondition does not support interactions." });
+		return this.isValidChannel(interaction.channelId);
 	}
 
 	public override async contextMenuRun(interaction: ContextMenuCommandInteraction): Promise<Result<unknown, UserError>> {
-		return this.error({ "message": "This precondition does not support interactions." });
+		return this.isValidChannel(interaction.channelId);
 	}
 
 	private async isValidChannel(channelId: string): Promise<Result<unknown, UserError>> {
 		// @ts-ignore
 		return Config.channels.includes(channelId)
 			? this.ok()
-			: this.error({ "message": "That command cannot be used in this channel." });
+			: this.error({ "message": "You cannot use that command in this channel." });
 	}
 }

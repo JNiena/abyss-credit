@@ -19,7 +19,7 @@ export class CurrencySystem {
 			return;
 		}
 
-		let worksheet: GoogleSpreadsheetWorksheet = await this.sheet.worksheet(Util.uppercaseFirst(currency));
+		let worksheet: GoogleSpreadsheetWorksheet = await this.sheet.worksheet(Util.capitalize(currency));
 		await worksheet.addRow({
 			"Awarded By": from,
 			"Awarded To": to,
@@ -34,7 +34,7 @@ export class CurrencySystem {
 	}
 
 	public async balance(currency: string, of: string): Promise<number> {
-		let rows: GoogleSpreadsheetRow[] = await this.sheet.rows(Util.uppercaseFirst(currency));
+		let rows: GoogleSpreadsheetRow[] = await this.sheet.rows(Util.capitalize(currency));
 		for (let i = 0; i < rows.length; i++) {
 			if (rows[i]["Name"] === of) {
 				return rows[i]["Total"];

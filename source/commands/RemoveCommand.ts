@@ -1,8 +1,8 @@
-import { Args, Command, MessageCommand } from "@sapphire/framework";
-import { GuildMember, Message } from "discord.js";
+import { ChatInputCommand, Command } from "@sapphire/framework";
+import { ChatInputCommandInteraction, InteractionResponse, User } from "discord.js";
 import { CurrencySystem } from "../CurrencySystem";
+import { Embeds } from "../Embeds";
 import { Spreadsheet } from "../Spreadsheet";
-import { Util } from "../Util";
 import Config = require("../Config");
 
 export class RemoveCommand extends Command {
@@ -12,25 +12,36 @@ export class RemoveCommand extends Command {
 		super(context, {
 			...options,
 			"name": "remove",
-			"aliases": ["remove", "r"],
 			// @ts-ignore
 			"preconditions": ["IsCreditor", "IsValidChannel"],
-			"description": "Removes from the balance of the designated user."
+			"description": "Adds to the balance of the designated user."
 		});
 		this.currencySystem = new CurrencySystem(new Spreadsheet(Config.spreadsheet.id, Config.spreadsheet.clientEmail, Config.spreadsheet.privateKey));
 	}
 
-	public async messageRun(message: Message, args: Args, context: MessageCommand.RunContext): Promise<void> {
-		if (!message.member) {
-			return message.channel.send("**That command cannot be executed.**").then();
-		}
+	public override registerApplicationCommands(registry: Command.Registry): void {
+		registry.registerChatInputCommand(builder => {
+			builder
+			.setName(this.name)
+			.setDescription(this.description)
+			.addStringOption(option => {
+				for (let i = 0; i < Config.currencies.length; i++) {
+					option.addChoices({ "name": Config.currencies[i], "value": Config.currencies[i] });
+				}
+				return option.addChoices({ "name": "all", "value": "all" }).setName("currency").setDescription("The type of currency to remove.").setRequired(true);
+			})
+			.addIntegerOption(option => option.setName("amount").setDescription("The amount of currency to remove.").setRequired(true).setMinValue(1))
+			.addUserOption(option => option.setName("user").setDescription("The user to remove currency from.").setRequired(true))
+			.addStringOption(option => option.setName("reason").setDescription("The reason for removing currency.").setRequired(true));
+		}, { idHints: ["1093782137724993547"] });
+	}
 
-		const currency: string = await args.pick("enum", { enum: [...Config.currencies, "all"] });
-		const member: GuildMember = await args.pick("member");
-		const amount: number = await args.pick("number");
-		const reason: string = await args.rest("string");
-
-		await this.currencySystem.remove(currency, Util.resolveDiscordName(message.member), Util.resolveDiscordName(member), amount, reason);
-		return message.channel.send(`**${amount} ${currency === "all" ? "of all currencies" : currency} has been removed from ${member}.**`).then();
+	public override async chatInputRun(interaction: ChatInputCommandInteraction, context: ChatInputCommand.RunContext): Promise<InteractionResponse> {
+		const currency: string = interaction.options.getString("currency", true);
+		const amount: number = interaction.options.getInteger("amount", true);
+		const user: User = interaction.options.getUser("user", true);
+		const reason: string = interaction.options.getString("reason", true);
+		await this.currencySystem.remove(currency, interaction.user.username, user.username, amount, reason);
+		return interaction.reply({ "embeds": [Embeds.removed(Embeds.currency(currency, amount), currency, amount, user, reason)] });
 	}
 }

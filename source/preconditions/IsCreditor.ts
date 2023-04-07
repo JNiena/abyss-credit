@@ -1,22 +1,26 @@
 import { Precondition, Result, UserError } from "@sapphire/framework";
-import { CommandInteraction, ContextMenuCommandInteraction, GuildMember, Message } from "discord.js";
+import { CommandInteraction, ContextMenuCommandInteraction, GuildMemberRoleManager, Message } from "discord.js";
 
 export class IsCreditor extends Precondition {
 	public override async messageRun(message: Message): Promise<Result<unknown, UserError>> {
-		return this.hasCreditorRole(message.member);
+		return this.hasCreditorRole(message.member?.roles);
 	}
 
 	public override async chatInputRun(interaction: CommandInteraction): Promise<Result<unknown, UserError>> {
-		return this.error({ "message": "This precondition does not support interactions." });
+		return this.hasCreditorRole(interaction.member?.roles);
 	}
 
 	public override async contextMenuRun(interaction: ContextMenuCommandInteraction): Promise<Result<unknown, UserError>> {
-		return this.error({ "message": "This precondition does not support interactions." });
+		return this.hasCreditorRole(interaction.member?.roles);
 	}
 
-	private async hasCreditorRole(member: GuildMember | null): Promise<Result<unknown, UserError>> {
-		return member?.roles.cache.some(role => role.name === "Creditor")
+	private async hasCreditorRole(roles: GuildMemberRoleManager | string[] | null | undefined): Promise<Result<unknown, UserError>> {
+		const message: string = "You need the creditor role to assign currencies.";
+		if (!roles || !(roles instanceof GuildMemberRoleManager)) {
+			return this.error({ "message": message });
+		}
+		return roles.member.roles.cache.some(role => role.name === "Creditor")
 			? this.ok()
-			: this.error({ "message": "This member does not have the correct role." });
+			: this.error({ "message": message });
 	}
 }
