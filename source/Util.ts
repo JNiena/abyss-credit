@@ -8,7 +8,10 @@ export class Util {
 
 	public static addCurrencyChoices(option: SlashCommandStringOption): SlashCommandStringOption {
 		for (let i = 0; i < Config.currencies.length; i++) {
-			option.addChoices({"name": Config.currencies[i], "value": Config.currencies[i]});
+			option.addChoices({
+				"name": Config.currencies[i],
+				"value": Config.currencies[i]
+			});
 		}
 		return option.addChoices({
 			"name": "all",
