@@ -1,4 +1,4 @@
-import { GoogleSpreadsheet, GoogleSpreadsheetRow, GoogleSpreadsheetWorksheet } from "google-spreadsheet";
+import {GoogleSpreadsheet, GoogleSpreadsheetRow, GoogleSpreadsheetWorksheet} from "google-spreadsheet";
 
 export class Spreadsheet {
 	private sheet: GoogleSpreadsheet;
@@ -12,7 +12,7 @@ export class Spreadsheet {
 	}
 
 	public async worksheet(title: string): Promise<GoogleSpreadsheetWorksheet> {
-		await this.sheet.useServiceAccountAuth({ client_email: this.clientEmail, private_key: this.privateKey });
+		await this.sheet.useServiceAccountAuth({client_email: this.clientEmail, private_key: this.privateKey});
 		await this.sheet.loadInfo();
 		return this.sheet.sheetsByTitle[title];
 	}
