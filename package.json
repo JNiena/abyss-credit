@@ -1,10 +1,10 @@
 {
   "name": "abyss-credit",
   "version": "1.0.0",
-  "main": "target/Main.js",
   "dependencies": {
     "discord.js": "^14.9.0",
     "@sapphire/framework": "^4.2.2",
+    "@sapphire/time-utilities": "^1.7.9",
     "google-spreadsheet": "^3.3.0"
   },
   "devDependencies": {
