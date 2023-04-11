@@ -1,13 +1,8 @@
-import { SapphireClient } from "@sapphire/framework";
-import { TextChannel, User } from "discord.js";
-import { Util } from "./Util";
+import {User} from "discord.js";
+import {Util} from "./Util";
 import Config = require("./Config");
 
 export class Embeds {
-	public static async send(client: SapphireClient, channelID: string, embed: any): Promise<void> {
-		await (client.channels.cache.get(channelID) as TextChannel).send({ "embeds": [embed] });
-	}
-
 	public static daily(fields: any, user: User): any {
 		return {
 			"title": "Daily Rewards",
@@ -40,7 +35,11 @@ export class Embeds {
 		return {
 			"title": "Added",
 			"color": 7803166,
-			"fields": [...fields, { "inline": false, "name": "Reason", "value": reason }],
+			"fields": [...fields, {
+				"inline": false,
+				"name": "Reason",
+				"value": reason
+			}],
 			"footer": {
 				"text": `User: ${user.username}`
 			},
@@ -54,7 +53,11 @@ export class Embeds {
 		return {
 			"title": "Removed",
 			"color": 7803166,
-			"fields": [...fields, { "inline": false, "name": "Reason", "value": reason }],
+			"fields": [...fields, {
+				"inline": false,
+				"name": "Reason",
+				"value": reason
+			}],
 			"footer": {
 				"text": `User: ${user.username}`
 			},
@@ -68,10 +71,19 @@ export class Embeds {
 		let fields: { "inline": boolean, "name": string, "value": string }[] = [];
 		if (currency === "all") {
 			for (let i = 0; i < Config.currencies.length; i++) {
-				fields.push({ "inline": true, "name": Util.capitalize(Config.currencies[i]), "value": `[+${amount.toString()}](https://localhost)` });
+				fields.push({
+					"inline": true,
+					"name": Util.capitalize(Config.currencies[i]),
+					"value": `[+${amount.toString()}](https://localhost)`
+				});
 			}
-		} else {
-			fields.push({ "inline": true, "name": Util.capitalize(currency), "value": `[+${amount.toString()}](https://localhost)` });
+		}
+		else {
+			fields.push({
+				"inline": true,
+				"name": Util.capitalize(currency),
+				"value": `[+${amount.toString()}](https://localhost)`
+			});
 		}
 		return fields;
 	}
