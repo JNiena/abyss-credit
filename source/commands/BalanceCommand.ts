@@ -1,9 +1,9 @@
-import { ChatInputCommand, Command } from "@sapphire/framework";
-import { ChatInputCommandInteraction, InteractionResponse, User } from "discord.js";
-import { CurrencySystem } from "../CurrencySystem";
-import { Embeds } from "../Embeds";
-import { Spreadsheet } from "../Spreadsheet";
-import { Util } from "../Util";
+import {ChatInputCommand, Command} from "@sapphire/framework";
+import {ChatInputCommandInteraction, InteractionResponse, User} from "discord.js";
+import {CurrencySystem} from "../CurrencySystem";
+import {Embeds} from "../Embeds";
+import {Spreadsheet} from "../Spreadsheet";
+import {Util} from "../Util";
 import Config = require("../Config");
 
 export class BalanceCommand extends Command {
@@ -23,22 +23,27 @@ export class BalanceCommand extends Command {
 	public override registerApplicationCommands(registry: Command.Registry): void {
 		registry.registerChatInputCommand(builder => {
 			builder
-			.setName(this.name)
-			.setDescription(this.description)
-			.addUserOption(option => option.setName("user").setDescription("The user to check the balance of.").setRequired(false));
-		}, { idHints: ["1093782140296114308"] });
+				.setName(this.name)
+				.setDescription(this.description)
+				.addUserOption(option => option.setName("user").setDescription("The user to check the balance of.").setRequired(false));
+		}, {"idHints": ["1093782140296114308"]});
 	}
 
 	public override async chatInputRun(interaction: ChatInputCommandInteraction, context: ChatInputCommand.RunContext): Promise<InteractionResponse> {
+		await interaction.deferReply();
 		let user: User | null = interaction.options.getUser("user", false);
 		if (!user) {
 			user = interaction.user;
 		}
 		let fields: { "inline": boolean, "name": string, "value": string }[] = [];
 		for (let i = 0; i < Config.currencies.length; i++) {
-			const balance: number = await this.currencySystem.balance(Config.currencies[i], user.username);
-			fields.push({ "inline": true, "name": Util.capitalize(Config.currencies[i]), "value": `[${balance.toString()}](https://localhost)` });
+			const balance: number = await this.currencySystem.balance(Config.currencies[i], user.id);
+			fields.push({
+				"inline": true,
+				"name": Util.capitalize(Config.currencies[i]),
+				"value": `[${balance.toString()}](https://localhost)`
+			});
 		}
-		return interaction.reply({ "embeds": [Embeds.balance(fields, user)] });
+		return interaction.editReply({"embeds": [Embeds.balance(fields, user)]}).then();
 	}
 }
