@@ -1,7 +1,7 @@
-import { GoogleSpreadsheetRow, GoogleSpreadsheetWorksheet } from "google-spreadsheet";
-import { Spreadsheet } from "./Spreadsheet";
-import { Timestamp } from "./Timestamp";
-import { Util } from "./Util";
+import {GoogleSpreadsheetRow, GoogleSpreadsheetWorksheet} from "google-spreadsheet";
+import {Spreadsheet} from "./Spreadsheet";
+import {Util} from "./Util";
+import {Timestamp} from "@sapphire/time-utilities";
 import Config = require("./Config");
 
 export class CurrencySystem {
@@ -25,7 +25,7 @@ export class CurrencySystem {
 			"Awarded To": to,
 			"Amount": amount,
 			"Reason": reason,
-			"Time": Timestamp.now()
+			"Time": new Timestamp("MM-DD-YYYY HH:mm:ss").displayUTC()
 		});
 	}
 
