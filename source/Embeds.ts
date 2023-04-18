@@ -67,14 +67,14 @@ export class Embeds {
 		};
 	}
 
-	public static currency(currency: string, amount: number): any {
+	public static currency(currency: string, amount: number, symbol: string): any {
 		let fields: { "inline": boolean, "name": string, "value": string }[] = [];
 		if (currency === "all") {
 			for (let i = 0; i < Config.currencies.length; i++) {
 				fields.push({
 					"inline": true,
 					"name": Util.capitalize(Config.currencies[i]),
-					"value": `[+${amount.toString()}](https://localhost)`
+					"value": `[${symbol}${amount.toString()}](https://localhost)`
 				});
 			}
 		}
@@ -82,7 +82,7 @@ export class Embeds {
 			fields.push({
 				"inline": true,
 				"name": Util.capitalize(currency),
-				"value": `[+${amount.toString()}](https://localhost)`
+				"value": `[${symbol}${amount.toString()}](https://localhost)`
 			});
 		}
 		return fields;

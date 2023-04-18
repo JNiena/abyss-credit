@@ -39,6 +39,6 @@ export class RemoveCommand extends Command {
 		const user: User = interaction.options.getUser("user", true);
 		const reason: string = interaction.options.getString("reason", true);
 		await this.currencySystem.remove(currency, interaction.user.id, user.id, amount, reason);
-		return interaction.editReply({"embeds": [Embeds.removed(Embeds.currency(currency, amount), currency, amount, user, reason)]}).then();
+		return interaction.editReply({"embeds": [Embeds.removed(Embeds.currency(currency, amount, "-"), currency, amount, user, reason)]}).then();
 	}
 }

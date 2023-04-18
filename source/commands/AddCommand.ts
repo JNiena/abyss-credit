@@ -39,6 +39,6 @@ export class AddCommand extends Command {
 		const user: User = interaction.options.getUser("user", true);
 		const reason: string = interaction.options.getString("reason", true);
 		await this.currencySystem.add(currency, interaction.user.id, user.id, amount, reason);
-		return interaction.editReply({"embeds": [Embeds.added(Embeds.currency(currency, amount), currency, amount, user, reason)]}).then();
+		return interaction.editReply({"embeds": [Embeds.added(Embeds.currency(currency, amount, "+"), currency, amount, user, reason)]}).then();
 	}
 }
