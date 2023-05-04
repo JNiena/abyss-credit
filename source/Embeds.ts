@@ -71,20 +71,20 @@ export class Embeds {
 		let fields: { "inline": boolean, "name": string, "value": string }[] = [];
 		if (currency === "all") {
 			for (let i = 0; i < Config.currencies.length; i++) {
-				fields.push({
-					"inline": true,
-					"name": Util.capitalize(Config.currencies[i]),
-					"value": `[${symbol}${amount.toString()}](https://localhost)`
-				});
+				fields.push(this.entry(Config.currencies[i], amount, symbol));
 			}
 		}
 		else {
-			fields.push({
-				"inline": true,
-				"name": Util.capitalize(currency),
-				"value": `[${symbol}${amount.toString()}](https://localhost)`
-			});
+			fields.push(this.entry(currency, amount));
 		}
 		return fields;
+	}
+
+	public static entry(currency: string, amount: number, symbol: string = ""): any {
+		return {
+			"inline": true,
+			"name": Util.capitalize(currency),
+			"value": `[${symbol}${amount.toString()}](https://localhost)`
+		};
 	}
 }
