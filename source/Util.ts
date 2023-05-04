@@ -6,6 +6,10 @@ export class Util {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	}
 
+	public static random(min: number, max: number): number {
+		return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+
 	public static addCurrencyChoices(option: SlashCommandStringOption): SlashCommandStringOption {
 		for (let i = 0; i < Config.currencies.length; i++) {
 			option.addChoices({
