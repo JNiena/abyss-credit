@@ -1,5 +1,5 @@
 import {SlashCommandStringOption} from "discord.js";
-import Config = require("./Config");
+import {config} from "./Main";
 
 export class Util {
     public static capitalize(string: string): string {
@@ -15,10 +15,10 @@ export class Util {
     }
 
     public static addCurrencyChoices(option: SlashCommandStringOption): SlashCommandStringOption {
-        for (let i = 0; i < Config.currencies.length; i++) {
+        for (let i: number = 0; i < config.get().currencies.length; i++) {
             option.addChoices({
-                "name": Config.currencies[i],
-                "value": Config.currencies[i]
+                "name": config.get().currencies[i],
+                "value": config.get().currencies[i]
             });
         }
         return option.addChoices({
