@@ -12,7 +12,7 @@ export class Embeds {
 				"text": `User: ${user.username}`
 			},
 			"thumbnail": {
-				"url": user.avatarURL() + ""
+				"url": user.displayAvatarURL()
 			}
 		};
 	}
@@ -26,7 +26,7 @@ export class Embeds {
 				"text": `User: ${user.username}`
 			},
 			"thumbnail": {
-				"url": user.avatarURL() + ""
+				"url": user.displayAvatarURL()
 			}
 		};
 	}
@@ -44,7 +44,7 @@ export class Embeds {
 				"text": `User: ${user.username}`
 			},
 			"thumbnail": {
-				"url": user.avatarURL() + ""
+				"url": user.displayAvatarURL()
 			}
 		};
 	}
@@ -62,7 +62,7 @@ export class Embeds {
 				"text": `User: ${user.username}`
 			},
 			"thumbnail": {
-				"url": user.avatarURL() + ""
+				"url": user.displayAvatarURL()
 			}
 		};
 	}
