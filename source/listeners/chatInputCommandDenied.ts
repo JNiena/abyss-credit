@@ -6,7 +6,7 @@ export class ChatInputCommandDenied extends Listener<typeof Events.ChatInputComm
 	public run(error: UserError, {interaction}: ChatInputCommandDeniedPayload): Promise<Message> | Promise<InteractionResponse> {
 		let message: string = error.message;
 		if (error.identifier === Identifiers.PreconditionCooldown) {
-			let remaining = new DurationFormatter().format(Reflect.get(Object(error.context), "remaining"));
+			const remaining = new DurationFormatter().format(Reflect.get(Object(error.context), "remaining"));
 			message = `This command is still on a cooldown! Try again in ${remaining}.`;
 		}
 		if (interaction.deferred || interaction.replied) {
