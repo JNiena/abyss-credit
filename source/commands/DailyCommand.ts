@@ -35,11 +35,7 @@ export class DailyCommand extends Command {
 		for (let i = 0; i < Config.currencies.length; i++) {
 			const amount: number = Math.floor(Math.random() * 3) + 1;
 			await this.currencySystem.add(Config.currencies[i], "Daily", interaction.user.id, amount, "Daily");
-			fields.push({
-				"inline": true,
-				"name": Util.capitalize(Config.currencies[i]),
-				"value": `[+${amount.toString()}](https://localhost)`
-			});
+			fields.push(Embeds.entry(Config.currencies[i], amount, "+"));
 		}
 		return interaction.editReply({"embeds": [Embeds.daily(fields, interaction.user)]}).then();
 	}

@@ -3,7 +3,6 @@ import {ChatInputCommandInteraction, InteractionResponse, User} from "discord.js
 import {CurrencySystem} from "../CurrencySystem";
 import {Embeds} from "../Embeds";
 import {Spreadsheet} from "../Spreadsheet";
-import {Util} from "../Util";
 import Config = require("../Config");
 
 export class BalanceCommand extends Command {
@@ -35,14 +34,10 @@ export class BalanceCommand extends Command {
 		if (!user) {
 			user = interaction.user;
 		}
-		let fields: { "inline": boolean, "name": string, "value": string }[] = [];
+		const fields: { "inline": boolean, "name": string, "value": string }[] = [];
 		for (let i = 0; i < Config.currencies.length; i++) {
 			const balance: number = await this.currencySystem.balance(Config.currencies[i], user.id);
-			fields.push({
-				"inline": true,
-				"name": Util.capitalize(Config.currencies[i]),
-				"value": `[${balance.toString()}](https://localhost)`
-			});
+			fields.push(Embeds.entry(Config.currencies[i], balance));
 		}
 		return interaction.editReply({"embeds": [Embeds.balance(fields, user)]}).then();
 	}
