@@ -31,7 +31,7 @@ export class DailyCommand extends Command {
 
 	public override async chatInputRun(interaction: ChatInputCommandInteraction, context: ChatInputCommand.RunContext): Promise<InteractionResponse> {
 		await interaction.deferReply();
-		let fields: { "inline": boolean, "name": string, "value": string }[] = [];
+		const fields: { "inline": boolean, "name": string, "value": string }[] = [];
 		for (let i = 0; i < Config.currencies.length; i++) {
 			const amount: number = Math.floor(Math.random() * 3) + 1;
 			await this.currencySystem.add(Config.currencies[i], "Daily", interaction.user.id, amount, "Daily");
