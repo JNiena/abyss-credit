@@ -1,6 +1,6 @@
 import {User} from "discord.js";
 import {Util} from "./Util";
-import Config = require("./Config");
+import {config} from "./Main";
 
 export class Embeds {
     public static level(user: User, xp: number, totalXp: number, level: number): any {
@@ -90,8 +90,8 @@ export class Embeds {
     public static currency(currency: string, amount: number, symbol: string): any {
         let fields: { "inline": boolean, "name": string, "value": string }[] = [];
         if (currency === "all") {
-            for (let i = 0; i < Config.currencies.length; i++) {
-                fields.push(this.entry(Config.currencies[i], amount, symbol));
+            for (let i = 0; i < config.get().currencies.length; i++) {
+                fields.push(this.entry(config.get().currencies[i], amount, symbol));
             }
         } else {
             fields.push(this.entry(currency, amount));
