@@ -6,5 +6,11 @@
 		"privateKey": ""
 	},
 	"currencies": [],
-	"channels": []
+	"channels": [],
+	"leveling": {
+		"xp": [],
+		"period": 0,
+		"rewards": [],
+		"channel": ""
+	}
 }
