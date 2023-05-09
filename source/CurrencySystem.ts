@@ -13,7 +13,7 @@ export class CurrencySystem {
 
 	public async add(currency: string, from: string, to: string, amount: number, reason: string): Promise<void> {
 		if (currency === "all") {
-			for (let i = 0; i < config.get().currencies.length; i++) {
+			for (let i: number = 0; i < config.get().currencies.length; i++) {
 				await this.add(config.get().currencies[i], from, to, amount, reason);
 			}
 			return;
@@ -34,7 +34,7 @@ export class CurrencySystem {
 
 	public async balance(currency: string, of: string): Promise<number> {
 		const rows: GoogleSpreadsheetRow[] = await this.sheet.rows(Util.capitalize(currency));
-		for (let i = 0; i < rows.length; i++) {
+		for (let i: number = 0; i < rows.length; i++) {
 			if (rows[i]["Name"] === of) {
 				return rows[i]["Total"];
 			}
