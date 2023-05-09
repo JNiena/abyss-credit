@@ -32,7 +32,7 @@ export class Embeds {
 	public static levelUp(user: User, level: number, rewards: { "currency": string, "amount": number }[]): APIEmbed {
 		return this.template("Level Up", [{
 			"name": "Info",
-			"value": `Congratulations on leveling up to __level ${level}__!\n${Util.formatRewards(rewards)}!`,
+			"value": `Congratulations on leveling up to **level ${level}**!\n${Util.formatRewards(rewards)}!`,
 			"inline": false
 		}], this.neutral, user);
 	}
