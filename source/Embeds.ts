@@ -22,7 +22,7 @@ export class Embeds {
 	}
 
 	public static level(user: User, xp: number, totalXp: number, level: number): APIEmbed {
-		return this.template("Level" + level, [{
+		return this.template("Level " + level, [{
 			"name": "Progress",
 			"value": `\`${xp}/${totalXp}\`\n\`${Util.createProgressBar(xp, totalXp, 15)}\``,
 			"inline": true
