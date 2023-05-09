@@ -1,6 +1,6 @@
 import { Listener } from "@sapphire/framework";
 import { Message } from "discord.js";
-import { levelSystem } from "../Main";
+import { config, levelSystem } from "../Main";
 import { Util } from "../Util";
 
 export class MessageListener extends Listener {
@@ -17,7 +17,7 @@ export class MessageListener extends Listener {
 	public run(message: Message): void {
 		const id: string = message.author.id;
 		const xp: { earned: number, started: boolean } | undefined = this.periods.get(id);
-		let add: number = Util.random(1, 3);
+		let add: number = Util.random(config.get().leveling.xp[0], config.get().leveling.xp[1]);
 		if (!xp || !xp.started) {
 			this.startPeriod(id, add);
 			return;
@@ -37,6 +37,6 @@ export class MessageListener extends Listener {
 		levelSystem.persistXp(id, add);
 		setTimeout(() => {
 			this.periods.set(id, { earned: 0, started: false });
-		}, 60_000);
+		}, config.get().leveling.period);
 	}
 }
