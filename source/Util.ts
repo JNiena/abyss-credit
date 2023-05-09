@@ -36,4 +36,18 @@ export class Util {
 		const percentageText = Math.round(percentage * 100) + "%";
 		return "`[" + progressText + emptyProgressText + "]" + percentageText + "`";
 	}
+
+	public static formatRewards(rewards: { "currency": string, "amount": number }[]): string {
+		let rewardsFormatted: string = "You have earned ";
+		if (rewards.length === 1) {
+			rewardsFormatted += `${rewards[0].amount} ${rewards[0].currency}`;
+		}
+		else {
+			for (let i: number = 0; i < rewards.length - 1; i++) {
+				rewardsFormatted += `${rewards[i].amount} ${rewards[i].currency}, `;
+			}
+			rewardsFormatted += `and ${rewards[rewards.length - 1].amount} ${rewards[rewards.length - 1].currency}`;
+		}
+		return rewardsFormatted;
+	}
 }
