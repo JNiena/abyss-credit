@@ -1,5 +1,5 @@
 import { ChatInputCommand, Command } from "@sapphire/framework";
-import { ChatInputCommandInteraction, InteractionResponse } from "discord.js";
+import { APIEmbedField, ChatInputCommandInteraction, InteractionResponse } from "discord.js";
 import { Embeds } from "../Embeds";
 import { config, currencySystem } from "../Main";
 
@@ -25,7 +25,7 @@ export class DailyCommand extends Command {
 
 	public override async chatInputRun(interaction: ChatInputCommandInteraction, context: ChatInputCommand.RunContext): Promise<InteractionResponse> {
 		await interaction.deferReply();
-		const fields: { "inline": boolean, "name": string, "value": string }[] = [];
+		const fields: APIEmbedField[] = [];
 		for (let i: number = 0; i < config.get().currencies.length; i++) {
 			const amount: number = Math.floor(Math.random() * 3) + 1;
 			await currencySystem.add(config.get().currencies[i], "Daily", interaction.user.id, amount, "Daily");

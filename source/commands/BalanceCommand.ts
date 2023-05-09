@@ -1,5 +1,5 @@
 import { ChatInputCommand, Command } from "@sapphire/framework";
-import { ChatInputCommandInteraction, InteractionResponse, User } from "discord.js";
+import { APIEmbedField, ChatInputCommandInteraction, InteractionResponse, User } from "discord.js";
 import { Embeds } from "../Embeds";
 import { config, currencySystem } from "../Main";
 
@@ -29,7 +29,7 @@ export class BalanceCommand extends Command {
 		if (!user) {
 			user = interaction.user;
 		}
-		const fields: { "inline": boolean, "name": string, "value": string }[] = [];
+		const fields: APIEmbedField[] = [];
 		for (let i = 0; i < config.get().currencies.length; i++) {
 			const balance: number = await currencySystem.balance(config.get().currencies[i], user.id);
 			fields.push(Embeds.entry(config.get().currencies[i], balance));
