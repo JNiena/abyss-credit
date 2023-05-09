@@ -29,6 +29,14 @@ export class Embeds {
 		}], this.neutral, user);
 	}
 
+	public static levelUp(user: User, level: number, rewards: { "currency": string, "amount": number }[]): APIEmbed {
+		return this.template("Level Up", [{
+			"name": "Info",
+			"value": `Congratulations on leveling up to __level ${level}__!\n${Util.formatRewards(rewards)}!`,
+			"inline": false
+		}], this.neutral, user);
+	}
+
 	public static added(fields: APIEmbedField[], currency: string, amount: number, user: User, reason: string): APIEmbed {
 		return this.template("Added", [...fields, {
 			"name": "Reason",
