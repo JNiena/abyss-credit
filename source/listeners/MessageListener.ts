@@ -15,6 +15,9 @@ export class MessageListener extends Listener {
 	}
 
 	public run(message: Message): void {
+		if (message.author.bot) {
+			return;
+		}
 		const id: string = message.author.id;
 		const xp: { earned: number, started: boolean } | undefined = this.periods.get(id);
 		let add: number = Util.random(config.get().leveling.xp[0], config.get().leveling.xp[1]);
