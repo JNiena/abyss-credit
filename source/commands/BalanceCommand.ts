@@ -17,7 +17,7 @@ export class BalanceCommand extends Command {
 		registry.registerChatInputCommand(builder => {
 			builder.setName(this.name).setDescription(this.description)
 				.addUserOption(option => option.setName("user").setDescription("The user to check the balance of.").setRequired(false));
-		}, { "idHints": ["1225640301927071806"] });
+		}, { "idHints": ["1225881897213890601"] });
 	}
 
 	public override async chatInputRun(interaction: Command.ChatInputCommandInteraction) {

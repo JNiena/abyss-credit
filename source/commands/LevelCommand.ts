@@ -17,7 +17,7 @@ export class LevelCommand extends Command {
 		registry.registerChatInputCommand(builder => {
 			builder.setName(this.name).setDescription(this.description)
 				.addUserOption(option => option.setName("user").setDescription("The user to check the level of.").setRequired(false));
-		}, { "idHints": ["1225640301247332352"] });
+		}, { "idHints": ["1225881895422656564"] });
 	}
 
 	public override async chatInputRun(interaction: Command.ChatInputCommandInteraction) {

@@ -21,7 +21,7 @@ export class RemoveCommand extends Command {
 				.addIntegerOption(option => option.setName("amount").setDescription("The amount of currency to remove.").setRequired(true).setMinValue(1))
 				.addUserOption(option => option.setName("user").setDescription("The user to remove currency from.").setRequired(true))
 				.addStringOption(option => option.setName("reason").setDescription("The reason for removing currency.").setRequired(true));
-		}, { "idHints": ["1225640300123521106"] });
+		}, { "idHints": ["1225881894651035728"] });
 	}
 
 	public override async chatInputRun(interaction: Command.ChatInputCommandInteraction) {

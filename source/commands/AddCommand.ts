@@ -21,7 +21,7 @@ export class AddCommand extends Command {
 				.addIntegerOption(option => option.setName("amount").setDescription("The amount of currency to add.").setRequired(true).setMinValue(1))
 				.addUserOption(option => option.setName("user").setDescription("The user to add currency to.").setRequired(true))
 				.addStringOption(option => option.setName("reason").setDescription("The reason for adding currency.").setRequired(true).setMinLength(1));
-		}, { "idHints": ["1225640309640401039"] });
+		}, { "idHints": ["1225881899914891304"] });
 	}
 
 	public override async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
