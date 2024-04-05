@@ -11,34 +11,22 @@ export class CurrencySystem {
 		this.sheet = sheet;
 	}
 
-	public async add(currency: string, from: string, to: string, amount: number, reason: string): Promise<void> {
+	public async add(currency: string, from: string, to: string, amount: number, reason: string) {
 		if (currency === "all") {
-			for (let i: number = 0; i < config.get().currencies.length; i++) {
-				await this.add(config.get().currencies[i], from, to, amount, reason);
-			}
+			for (let i: number = 0; i < config.get().currencies.length; i++) { await this.add(config.get().currencies[i], from, to, amount, reason); }
 			return;
 		}
 		const worksheet: GoogleSpreadsheetWorksheet = await this.sheet.worksheet(Util.capitalize(currency));
-		await worksheet.addRow({
-			"Awarded By": from,
-			"Awarded To": to,
-			"Amount": amount,
-			"Reason": reason,
-			"Time": new Timestamp("MM-DD-YYYY HH:mm:ss").displayUTC()
-		});
+		await worksheet.addRow({ "Awarded By": from, "Awarded To": to, "Amount": amount, "Reason": reason, "Time": new Timestamp("MM-DD-YYYY HH:mm:ss").displayUTC() });
 	}
 
-	public async remove(currency: string, from: string, to: string, amount: number, reason: string): Promise<void> {
+	public async remove(currency: string, from: string, to: string, amount: number, reason: string) {
 		await this.add(currency, from, to, -amount, reason);
 	}
 
-	public async balance(currency: string, of: string): Promise<number> {
+	public async balance(currency: string, of: string) {
 		const rows: GoogleSpreadsheetRow[] = await this.sheet.rows(Util.capitalize(currency));
-		for (let i: number = 0; i < rows.length; i++) {
-			if (rows[i]["Name"] === of) {
-				return rows[i]["Total"];
-			}
-		}
+		for (let i: number = 0; i < rows.length; i++) { if (rows[i].get("Name") === of) { return rows[i].get("Total"); } }
 		return 0;
 	}
 }
